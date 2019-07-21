@@ -1,0 +1,102 @@
+import React, { Component } from 'react'
+import { Button, Input, Icon, Dropdown, Card } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import $ from 'jquery'
+
+class Music extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            play: false,
+            currentSong: null,
+        };
+    }
+
+    audio = null;
+
+    togglePlay = (e) => {
+        const song = e.target.id;
+        if (this.state.currentSong === song) {
+            this.state.play ? this.audio.pause() : this.audio.play();
+            this.setState({ play: !this.state.play });
+        } else {
+
+            if (this.audio) {
+                this.audio.pause();
+            }
+
+            this.setState({
+                currentSong: song,
+                play: true,
+            });
+            this.audio = new Audio(song);
+            this.audio.play();
+        }
+    }
+
+    render() {
+        const songs = [
+            'http://streaming.tdiradio.com:8000/house.mp3',
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+        ];
+        return (
+            <div>
+                {songs.map(song =>
+                    <div>
+                        <button id={song} key={song} onClick={this.togglePlay}>
+                            {this.state.currentSong !== song || !this.state.play ? 'Play' : 'Pause'}
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    }
+}
+
+export default Music;
+
+
+// class Music extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+
+//             play: false,
+//             pause: true
+
+//         };
+
+//         this.url = "http://streaming.tdiradio.com:8000/house.mp3";
+//         this.audio = new Audio(this.url);
+
+//     }
+
+//     play() {
+//         this.setState({
+//             play: true,
+//             pause: false
+//         });
+//         console.log(this.audio);
+//         this.audio.play();
+//     }
+
+//     pause() {
+//         this.setState({ play: false, pause: true });
+//         this.audio.pause();
+//     }
+
+//     render() {
+
+//         return (
+//             <div>
+//                 <button onClick={this.play}>Play</button>
+//                 <button onClick={this.pause}>Pause</button>
+//             </div>
+//         );
+//     }
+// }
+
+
+// export default Music
